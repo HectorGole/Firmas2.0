@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Generador de firma Goleman IPS</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121832; --muted:#a9b0c7; --accent:#F97838; --text:#e8ecff;
+      --ok:#22c55e; --danger:#ef4444; --border:rgba(255,255,255,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Lucida Sans Unicode",Arial,sans-serif;background:linear-gradient(180deg,#0b1020,#0b1227);} 
+    .container{max-width:1100px;margin:auto;padding:28px}
+    .header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .logo{width:36px;height:36px;border-radius:10px;background:var(--accent);display:grid;place-items:center;color:#000;font-weight:800}
+    h1{font-size:20px;color:var(--text);margin:0}
+    p.sub{margin:0;color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .card h2{margin:0 0 12px;color:#fff;font-size:16px}
+    .card .content{padding:20px}
+
+    form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    form .full{grid-column:1/-1}
+    label{display:block;color:#d6dbff;font-size:12px;margin:2px 2px 6px 2px}
+    input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:#0e1531;color:#e7ebff;outline:none}
+    input:focus{border-color:#2e6bff;box-shadow:0 0 0 4px rgba(46,107,255,.15)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    button{appearance:none;border:1px solid var(--border);background:#151d3d;color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
+    button.primary{background:var(--accent);border-color:transparent;color:#091123;font-weight:700}
+    button.ghost{background:transparent}
+
+    .preview-wrap{padding:14px;background:linear-gradient(180deg,#0d1330,#0b1020);border-radius:16px;border:1px dashed var(--border)}
+    .preview{background:#fff;border-radius:12px;padding:18px;overflow:auto}
+    .helper{font-size:12px;color:var(--muted);margin-top:8px}
+    .note{font-size:12px;color:#c3c9e6}
+
+    .footer{color:#8e97b8;text-align:center;font-size:12px;margin-top:18px}
+    .kbd{border:1px solid var(--border);background:#0e1531;color:#cbd1ec;padding:2px 6px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">G</div>
+      <div>
+        <h1>Generador de firma – Goleman IPS</h1>
+        <p class="sub">Edita los campos y exporta el HTML listo para pegar en tu correo.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Panel de edición -->
+      <section class="card">
+        <div class="content">
+          <h2>Editor</h2>
+          <form id="form">
+            <div>
+              <label for="nombre">Nombre</label>
+              <input id="nombre" placeholder="Ej: Andrea" autocomplete="off" />
+            </div>
+            <div>
+              <label for="apellido">Apellido</label>
+              <input id="apellido" placeholder="Ej: Gómez" autocomplete="off" />
+            </div>
+            <div>
+              <label for="cargo">Cargo</label>
+              <input id="cargo" placeholder="Ej: Coordinadora de Operaciones" autocomplete="off" />
+            </div>
+            <div>
+              <label for="area">Área</label>
+              <input id="area" placeholder="Ej: Operaciones" autocomplete="off" />
+            </div>
+            <div class="full">
+              <label for="correo">Correo</label>
+              <input id="correo" type="email" placeholder="nombre.apellido@goleman.com.co" autocomplete="off" />
+            </div>
+          </form>
+          <div class="actions">
+            <button class="primary" id="btnDescargar">Descargar .html</button>
+            <button class="ghost" id="btnCopiar">Copiar HTML</button>
+            <button class="ghost" id="btnReset">Limpiar</button>
+          </div>
+          <p class="helper">Tip: prueba <span class="kbd">Ctrl</span> + <span class="kbd">S</span> para guardar el archivo después de abrirlo.</p>
+        </div>
+      </section>
+
+      <!-- Panel de previsualización -->
+      <section class="card">
+        <div class="content">
+          <h2>Previsualización</h2>
+          <div class="preview-wrap">
+            <div class="preview" id="preview">
+              <!-- Firma (plantilla) -->
+              <div id="signature-root">
+                <table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="min-width: 450px; vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+	<tbody>
+		<tr style="text-align: center;"><td><h2 color="#000927" class="name__NameContainer-sc-1m457h3-0 jxbGUj" style="margin: 0px; font-size: 18px; color: rgb(0, 9, 39); font-weight: 600;">
+			<span id="field-nombre">NOMBRES</span>
+			<span>&nbsp;</span>
+			<span id="field-apellido">APELLIDOS</span>
+
+		</h2>
+		 <p color="#000927" font-size="medium" class="job-title__Container-sc-1hmtp73-0 ifJNJc" style="margin: 0px; color: rgb(0, 9, 39); font-size: 14px; line-height: 22px;">
+			<span id="field-cargo">CARGO</span>
+		</p>
+		<p color="#000927" font-size="medium" class="company-details__CompanyContainer-sc-j5pyy8-0 VnOLK" style="margin: 0px; font-weight: 500; color: rgb(0, 9, 39); font-size: 14px; line-height: 22px;">
+			<span id="field-area">AREA</span>
+			<span>&nbsp;|&nbsp;</span>
+			<span>Goleman IPS</span>
+		</p>
+		<p color="#000927" font-size="medium" class="custom-field__CustomFieldContainer-sc-190n2f-0 dKSugh" style="color: rgb(0, 9, 39); margin: 0px; font-size: 14px; line-height: 22px;">
+			<span>Sonrisas que nos inspiran, cuidado que transforma</span>
+		</p>
+	</td>
+</tr>
+      <tr>
+      	<td>
+      		<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="width: 100%; vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      			<tbody>
+      				<tr>
+      					<td height="30"> </td>
+      				</tr>
+      				<tr>
+      					<td color="#F97838" direction="horizontal" width="auto" height="1" class="color-divider__Divider-sc-1h38qjv-0 llIisW" style="width: 100%; border-bottom: 1px solid rgb(249, 120, 56); border-left: none; display: block;">
+      					</td>
+      				</tr>
+      				<tr>
+      					<td height="30"></td>
+      				</tr>
+      			</tbody>
+      		</table>
+
+      		<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="width: 100%; vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      			<tbody>
+      				<tr style="vertical-align: middle;"><td>
+      					<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      						<tbody>
+
+      					<tr height="25" style="vertical-align: middle;"><td width="30" style="vertical-align: middle;">
+      					<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      					<tbody>
+      				</tbody>
+      			</table>
+
+
+      		  </td>
+
+      		 	<td style="padding: 0px; color: rgb(0, 9, 39);"><a href="tel: " color="#000927" class="contact-info__ExternalLink-sc-mmkjr6-2 ibLXSU" style="text-decoration: none; color: rgb(0, 9, 39); font-size: 12px;">
+      		 </td>
+      		</tr>
+
+      				<tr height="25" style="vertical-align: middle;"><td width="30" style="vertical-align: middle;">
+      		 		<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      		 			<tbody>
+      		 			<tr>
+      		 				<td style="vertical-align: bottom;">
+      		 			<span color="#F97838" width="11" class="contact-info__IconWrapper-sc-mmkjr6-1 bglVXe" style="display: inline-block; background-color: rgb(249, 120, 56);">
+      		 				<img src="https://cdn2.hubspot.net/hubfs/53/tools/email-signature-generator/icons/email-icon-2x.png" color="#F97838" alt="emailAddress" width="13" class="contact-info__ContactLabelIcon-sc-mmkjr6-0 cnkwri" style="display: block; background-color: rgb(249, 120, 56);">
+      		 			</span>
+      		 		</td>
+      		 	</tr>
+      		 	</tbody>
+      		 </table>
+      		</td>
+      		<td style="padding: 0px;">
+      		 		<span id="field-email" color="#000927" class="contact-info__ExternalLink-sc-mmkjr6-2 ibLXSU" style="text-decoration: none; color: rgb(0, 9, 39); font-size:12px;">CORREO</span>
+    
+      		 </td>
+      		</tr><tr height="25" style="vertical-align: middle;"><td width="30" style="vertical-align: middle;">
+      			<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      				<tbody>
+      					<tr>
+      						<td style="vertical-align: bottom;">
+      						<span color="#F97838" width="11" class="contact-info__IconWrapper-sc-mmkjr6-1 bglVXe" style="display: inline-block; background-color: rgb(249, 120, 56);">
+      							<img src="https://cdn2.hubspot.net/hubfs/53/tools/email-signature-generator/icons/link-icon-2x.png" color="#F97838" alt="website" width="13" class="contact-info__ContactLabelIcon-sc-mmkjr6-0 cnkwri" style="display: block; background-color: rgb(249, 120, 56);">
+      						</span>
+      					</td>
+      				</tr>
+      			</tbody>
+      		</table>
+      	</td>
+
+      	<td style="padding: 0px;">
+      		<a href="//goleman.com.co" color="#000927" class="contact-info__ExternalLink-sc-mmkjr6-2 ibLXSU" style="text-decoration: none; color: rgb(0, 9, 39); font-size: 12px;">
+      			<span>goleman.com.co</span>
+      		</a>
+      	</td>
+      </tr>
+      				<tr height="25" style="vertical-align: middle;">
+      					<td width="30" style="vertical-align: middle;">
+      						<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      							<tbody>
+      								<tr>
+      										<td style="vertical-align: bottom;">
+      									<span color="#F97838" width="11" class="contact-info__IconWrapper-sc-mmkjr6-1 bglVXe" style="display: inline-block; background-color: rgb(249, 120, 56);"><img src="https://cdn2.hubspot.net/hubfs/53/tools/email-signature-generator/icons/address-icon-2x.png" color="#F97838" alt="address" width="13" class="contact-info__ContactLabelIcon-sc-mmkjr6-0 cnkwri" style="display: block; background-color: rgb(249, 120, 56);">
+      									</span>
+      								</td>
+      							</tr>
+      						</tbody>
+      					</table>
+      				</td>
+      				<td style="padding: 0px;">
+      					<span color="#000927" class="contact-info__Address-sc-mmkjr6-3 jxDmGK" style="font-size: 12px; color: rgb(0, 9, 39);">
+      					<span>Carrera 7 #74b 56</span>
+      				</span>
+      			</td>
+      		</tr>
+      		</tbody>
+      	</table>
+  </td>
+
+      							<td width="15"><div bis_skin_checked="1">
+      							</div>
+      						</td>
+      						<td style="text-align: right;"><table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="width: 100%; vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      							<tbody>
+      								<tr>
+      									<td>
+      										<img src="https://firebasestorage.googleapis.com/v0/b/standards-site-beta.appspot.com/o/documents%2Fyuvag6iqh33%2Ff6klz1msgf7%2Fgoleman_1706826557296_2500x2500.gif?alt=media&amp;token=2f6183siow3" role="presentation" width="130" class="image__StyledImage-sc-hupvqm-0 gYgOut" style="display: inline-block; max-width: 130px;">
+      									</td>
+      									</tr>
+      									<tr>
+      									   <td height="10">
+      									   </td>
+      										</tr>
+      										<tr>
+      											<td>
+      												<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="display: inline-block; vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      													<tbody>
+      														<tr style="text-align: right;">
+      															<td>
+      																<a href="https://facebook.com/golemanips" color="#F97838" class="social-links__LinkAnchor-sc-py8uhj-2 hBVWAh" style="display: inline-block; padding: 0px; background-color: rgb(249, 120, 56);">
+      															<img src="https://cdn2.hubspot.net/hubfs/53/tools/email-signature-generator/icons/facebook-icon-2x.png" alt="facebook" color="#F97838" width="24" class="social-links__LinkImage-sc-py8uhj-1 hSTSwA" style="background-color: rgb(249, 120, 56); max-width: 135px; display: block;">
+      														</a>
+      													</td>
+      													<td width="5">
+      														<div bis_skin_checked="1">
+      															</div>
+      														</td>
+      													<td>
+      														<a href="https://www.linkedin.com/company/golemanips" color="#F97838" class="social-links__LinkAnchor-sc-py8uhj-2 hBVWAh" style="display: inline-block; padding: 0px; background-color: rgb(249, 120, 56);">
+      															<img src="https://cdn2.hubspot.net/hubfs/53/tools/email-signature-generator/icons/linkedin-icon-2x.png" alt="linkedin" color="#F97838" width="24" class="social-links__LinkImage-sc-py8uhj-1 hSTSwA" style="background-color: rgb(249, 120, 56); max-width: 135px; display: block;">
+      														</a>
+      													</td>
+      													<td width="5">
+      														<div bis_skin_checked="1">
+      														</div>
+      													</td>
+      													<td>
+      														<a href="https://www.instagram.com/golemanips" color="#F97838" class="social-links__LinkAnchor-sc-py8uhj-2 hBVWAh" style="display: inline-block; padding: 0px; background-color: rgb(249, 120, 56);">
+      															<img src="https://cdn2.hubspot.net/hubfs/53/tools/email-signature-generator/icons/instagram-icon-2x.png" alt="instagram" color="#F97838" width="24" class="social-links__LinkImage-sc-py8uhj-1 hSTSwA" style="background-color: rgb(249, 120, 56); max-width: 135px; display: block;">
+      														</a>
+      													</td>
+      												</tr>
+      											</tbody>
+      										</table>
+      									</td>
+      								</tr>
+      							</tbody>
+      						</table>
+      					</td>
+      				</tr>
+      			</tbody>
+      		</table>
+      		<table cellpadding="0" cellspacing="0" class="table__StyledTable-sc-1avdl6r-0 kAbRZI" style="width: 100%; vertical-align: -webkit-baseline-middle; font-size: medium; font-family: &quot;Lucida Sans Unicode&quot;;">
+      			<tbody>
+      				<tr>
+      					<td height="30">
+      					</td>
+      				</tr>
+      				<tr>
+      					<td color="#F97838" direction="horizontal" width="auto" height="1" class="color-divider__Divider-sc-1h38qjv-0 llIisW" style="width: 100%; border-bottom: 1px solid rgb(249, 120, 56); border-left: none; display: block;">
+      						</td>
+      					</tr>
+      					<tr>
+      						<td height="30">
+      						</td>
+      					</tr>
+      				</tbody>
+      			</table>
+      		</td>
+      	</tr>
+      </tbody>
+      </table>
+              </div>
+              <!-- /Firma -->
+            </div>
+          </div>
+          <p class="note">La descarga incluye solo la firma (no este editor). Mantuvimos los estilos en línea para máxima compatibilidad con clientes de correo.</p>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">Hecho para Goleman IPS. Puedes pegar el HTML exportado en la firma de Outlook/Gmail.</div>
+  </div>
+
+  <script>
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    const fields = {
+      nombre: $('#nombre'),
+      apellido: $('#apellido'),
+      cargo: $('#cargo'),
+      area: $('#area'),
+      correo: $('#correo')
+    };
+
+    const sig = {
+      nombre: $('#field-nombre'),
+      apellido: $('#field-apellido'),
+      cargo: $('#field-cargo'),
+      area: $('#field-area'),
+      email: $('#field-email')
+    };
+
+    const storageKey = 'firma-goleman-v1';
+
+    function sanitizeText(v){
+      return (v||'').replace(/[\n\r\t]+/g,' ').trim();
+    }
+
+    function updatePreview(){
+      sig.nombre.textContent = sanitizeText(fields.nombre.value) || 'NOMBRES';
+      sig.apellido.textContent = sanitizeText(fields.apellido.value) || 'APELLIDOS';
+      sig.cargo.textContent = sanitizeText(fields.cargo.value) || 'CARGO';
+      sig.area.textContent = sanitizeText(fields.area.value) || 'AREA';
+      const email = sanitizeText(fields.correo.value);
+      sig.email.textContent = email || 'CORREO';
+      // Persistir
+      const payload = {
+        n: fields.nombre.value,
+        a: fields.apellido.value,
+        c: fields.cargo.value,
+        ar: fields.area.value,
+        e: fields.correo.value
+      };
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    }
+
+    // Cargar desde localStorage si existe
+    try{
+      const raw = localStorage.getItem(storageKey);
+      if(raw){
+        const v = JSON.parse(raw);
+        fields.nombre.value = v.n || '';
+        fields.apellido.value = v.a || '';
+        fields.cargo.value = v.c || '';
+        fields.area.value = v.ar || '';
+        fields.correo.value = v.e || '';
+      }
+    }catch(_){/* ignore */}
+    updatePreview();
+
+    $$('#form input').forEach(i=> i.addEventListener('input', updatePreview));
+
+    function buildStandaloneHTML(){
+      // Extraemos solo la firma
+      const root = document.getElementById('signature-root');
+      const signatureHTML = root.innerHTML.trim();
+      const doc = `<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n<title>Firma – ${sig.nombre.textContent} ${sig.apellido.textContent}</title>\n</head>\n<body>\n${signatureHTML}\n</body>\n</html>`;
+      return doc;
+    }
+
+    function download(filename, text){
+      const blob = new Blob([text], {type:'text/html;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 5000);
+    }
+
+    $('#btnDescargar').addEventListener('click', ()=>{
+      const name = `${sanitizeText(fields.nombre.value)||'Firma'}_${sanitizeText(fields.apellido.value)||'Goleman'}.html`;
+      download(name, buildStandaloneHTML());
+    });
+
+    $('#btnCopiar').addEventListener('click', async ()=>{
+      const text = buildStandaloneHTML();
+      try{ await navigator.clipboard.writeText(text); alert('HTML copiado al portapapeles.'); }
+      catch(_){
+        // Fallback simple
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+        alert('HTML copiado (método alternativo).');
+      }
+    });
+
+    $('#btnReset').addEventListener('click', ()=>{
+      Object.values(fields).forEach(i=> i.value='');
+      localStorage.removeItem(storageKey);
+      updatePreview();
+    });
+  </script>
+</body>
+</html>
